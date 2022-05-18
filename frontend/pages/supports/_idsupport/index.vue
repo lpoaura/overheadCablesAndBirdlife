@@ -29,14 +29,16 @@
 </template>
 
 <script>
-export default {
+import Vue from 'vue'
+
+export default Vue.extend({
   name: 'SupportDetailPage',
   /**
    * asyncData(): Method that gather data before page be created
    *
-   * @param {$axios, params} allow to send request to data through $axios, and params allows to
-   * access the selected support id
-   * (with page "support/_id.vue" => "http://path/support/12" => id = 12)
+   * @param {$axios, params} $axios allows to send request to data through $axios, and params
+   * allows to access the selected support id from URL
+   * (with page "supports/_id.vue" => "https://path/supports/12" => id = 12)
    */
   async asyncData({ $axios, params }) {
     return {
@@ -46,8 +48,8 @@ export default {
   data() {
     return {
       drawer_opened: true, // drawer closed by default
-      miniVariant: true, // wide drawer when opening by default
+      miniVariant: true, // small drawer when opening by default
     }
   },
-}
+})
 </script>

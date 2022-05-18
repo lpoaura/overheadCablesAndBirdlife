@@ -5,20 +5,24 @@
       <v-spacer></v-spacer>
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon @click="newDiag">
+          <v-btn icon v-bind="attrs" v-on="on" @click="newDiag">
             <v-icon v-if="diagnosis.last" color="green"
               >mdi-eye-plus-outline</v-icon
             >
           </v-btn>
         </template>
-        <span>Ajouter un dignostic</span>
+        <span>Ajouter un diagnostic</span>
       </v-tooltip>
       <v-btn icon @click="updateDiag">
         <v-icon color="orange">mdi-pencil</v-icon>
       </v-btn>
     </v-card-title>
     <v-card-subtitle>
-      {{ $t('diagnosis.last-one') }}{{ diagnosis.date }}</v-card-subtitle
+      {{ $t('diagnosis.last-one') }}{{ diagnosis.date }}
+
+      <v-chip small :class="[diagnosis.neutralized ? 'success' : 'error']"
+        >{{ diagnosis.neutralized ? 'neutralisé' : 'à neutraliser' }}
+      </v-chip></v-card-subtitle
     >
 
     <v-card-text>
@@ -77,9 +81,7 @@
             <!-- <v-col>date: {{ pictDate }}</v-col>   -->
             <v-col></v-col>
             <v-col cols="1">
-              <v-icon small color="red" @click="notImplementedYet"
-                >mdi-trash-can</v-icon
-              >
+              <v-icon small color="red">mdi-trash-can</v-icon>
             </v-col>
           </v-row>
         </v-list-item>
@@ -88,7 +90,7 @@
   </v-card>
 </template>
 
-<script lang="ts">
+<script >
 import Vue from 'vue'
 
 export default Vue.extend({
@@ -104,21 +106,21 @@ export default Vue.extend({
       },
     }
   },
-  mounted() {
-    console.log('diagnosis', this.diagnosis)
-  },
+  // mounted() {
+  //   // console.log('diagnosis', this.diagnosis)
+  // },
   methods: {
     newDiag() {
-      this.$router.push({
-        path: `/supports/${this.diagnosis.infrastructure}/diagnosis/${this.diagnosis.id}`,
-        query: { modifyDiag: 'false' },
-      })
+      this.$router.push(
+        // `/supports/${this.diagnosis.infrastructure}/new_diag/${this.diagnosis.id}`
+        {
+          path: `/diagnosis/new`,
+          query: { OriginDiagId: this.diagnosis.id },
+        }
+      )
     },
     updateDiag() {
-      this.$router.push({
-        path: `/supports/${this.diagnosis.infrastructure}/diagnosis/${this.diagnosis.id}`,
-        query: { modifyDiag: 'true' },
-      })
+      this.$router.push(`/diagnosis/${this.diagnosis.id}/update`)
     },
     notImplementedYet() {
       return null
